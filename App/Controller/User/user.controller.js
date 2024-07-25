@@ -8,7 +8,7 @@ const bcrypt = require("bcryptjs");
 exports.user = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const payload = { username, password: bcrypt.hashSync(password) };
+    const payload = { username, password: bcrypt.hashSync(password, 12) };
 
     const create = await createdCreds(payload);
 
@@ -38,10 +38,14 @@ exports.login = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: checkUsername.id, username: checkUsername.username }, 'secret', { expiresIn: '1h' });
+    const token = jwt.sign(
+      { id: checkUsername.id, username: checkUsername.username },
+      "secret",
+      { expiresIn: "1h" }
+    );
     return res.status(200).json({
       message: "Login successfully !",
-      token:token
+      token: token,
     });
   } catch (error) {
     throw error;
