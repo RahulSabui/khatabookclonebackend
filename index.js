@@ -5,6 +5,7 @@ const port = 5001;
 // const Customer = require("./models/customer");
 
 const userRoute = require("./App/routes/user.route");
+const customerRoute = require("./App/routes/customer.route")
 
 app.use(
   express.json({
@@ -14,6 +15,9 @@ app.use(
 );
 
 app.use("/api/v1/", userRoute);
+app.use("/api/v1/c/", customerRoute);
+
+
 
 app.use((err, req, res, next) => {
   res.status(404).json({ err });
