@@ -12,7 +12,7 @@ const { catchAsync } = require("../../utils/catchAsync");
 
 router.get("/customers", getCustomer);
 router.post("/customers", auth, catchAsync(postCustomer));
-router.get("/customers/:custid", auth, catchAsync(getEditCustomer));
+router.get("/customers/:custid/edit", auth, catchAsync(getEditCustomer));
 router.put("/customers/:custid", auth, catchAsync(putCustomer));
 router.delete("/customers/:custid", auth, catchAsync(deleteCustomer));
 

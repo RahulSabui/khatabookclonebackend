@@ -18,7 +18,7 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Headers",
     "Origin,X-Requested-With,Content-Type,Accept,Authorization"
   );
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,PUT,DELETE");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
   next();
 });
 
@@ -26,10 +26,9 @@ app.use("/api/v1/", userRoute);
 app.use("/api/v1/c/", customerRoute);
 
 app.use((err, req, res, next) => {
-  const { statusCode = 404, message } = err;
-  res.send(err.message);
-  // res.status(404).json({ err });
-  next();
+  const { statusCode = 500, message } = err;
+  if (!message) message = "Something Went Wrong";
+  res.status(404).json({ message });
 });
 
 app.listen(port, () => {

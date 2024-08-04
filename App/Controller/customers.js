@@ -1,7 +1,7 @@
 const { Customer } = require("../../models");
 const { User } = require("../../models");
+const AppError = require("../../utils/AppError");
 
-// const AppError = require("../../utils/AppError"); //not using
 const {
   getCustomerDetails,
   postCustomerDetails,
@@ -10,7 +10,10 @@ const {
 
 exports.getCustomer = async (req, res, next) => {
   const customers = await getCustomerDetails();
-  console.log(customers);
+  // if (!customers) {
+  //   const error = new AppError(404, "Customer Not Found");
+  //   return next(error);
+  // }
   return res.status(200).json(customers);
 };
 
@@ -20,16 +23,20 @@ exports.postCustomer = async (req, res, next) => {
   const user = await User.findByPk(req.user.id);
   const payload = { name, money, date, details };
   const customer = await postCustomerDetails(user, payload);
-  res.status(200).json({ message: "Succesfully created customer" });
+  // if (!customer) {
+  //   const error = new AppError(404, "Customer Not Found");
+  //   return next(error);
+  // }
+  return res.status(200).json({ message: "Succesfully created customer" });
 };
 
 exports.getEditCustomer = async (req, res, next) => {
   const { custid } = req.params;
   const customer = await Customer.findByPk(custid);
   if (!customer) {
-    return res.status(404).json({ message: "Customer Not Found" });
+    const error = new AppError(404, "Customer Not Found");
+    return next(error);
   }
-  // console.log(customer);
   res.status(200).json({ customer });
 };
 
